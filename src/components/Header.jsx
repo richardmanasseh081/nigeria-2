@@ -109,16 +109,16 @@ function Header({ cart = [], setShowCart }) {
         {showMenu && (
           <div
             ref={menuRef}
-            className="fixed left-0 top-16 bottom-0 w-screen md:w-2/3 lg:w-1/2 bg-green-50 dark:bg-green-900 shadow-2xl z-50 overflow-hidden"
+            className="fixed left-0 top-16 bottom-0 w-screen md:w-2/3 lg:w-1/2 bg-white dark:bg-gray-800 shadow-2xl z-50 overflow-hidden"
           >
             <div className="flex h-full">
               {/* Sidebar Navigation */}
-              <nav className="w-40 bg-green-100 dark:bg-green-800 p-3 border-r dark:border-green-700 overflow-y-auto">
+              <nav className="w-40 bg-gray-50 dark:bg-gray-900 p-3 border-r dark:border-gray-700 overflow-y-auto">
                 <div className="space-y-1">
                   {/* Main Navigation */}
                   <button
                     onClick={() => handleNavClick("/")}
-                    className="w-full text-left flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                    className="w-full text-left flex items-center gap-3 px-3 py-2 rounded hover:bg-blue-50 dark:hover:bg-gray-700 transition"
                   >
                     <FaHome className="text-green-600" /> <span>Home</span>
                   </button>
@@ -152,7 +152,7 @@ function Header({ cart = [], setShowCart }) {
                   </button>
 
                   {/* Divider */}
-                  <div className="my-2 border-t dark:border-green-700"></div>
+                  <div className="my-2 border-t dark:border-gray-700"></div>
 
                   {/* Utilities */}
                   <Link
@@ -198,7 +198,7 @@ function Header({ cart = [], setShowCart }) {
               </nav>
 
               {/* Content Area */}
-              <div className="flex-1 p-4 overflow-y-auto bg-green-50 dark:bg-green-900 text-gray-800 dark:text-white">
+              <div className="flex-1 p-4 overflow-y-auto bg-white dark:bg-gray-800 text-gray-800 dark:text-white">
                 <h3 className="font-bold text-lg mb-3">Quick Links</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
                   Navigate to manage your store, view analytics, or access account settings.
