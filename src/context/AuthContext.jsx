@@ -27,7 +27,16 @@ export function AuthProvider({ children }) {
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        // If MSW isn't running (404) or in dev mode, fall back to a local demo user
+        // If backend not available, try local frontend-only users store
+        const localUsersRaw = localStorage.getItem("__local_users__");
+        const localUsers = localUsersRaw ? JSON.parse(localUsersRaw) : [];
+        const found = localUsers.find((u) => u.email === email && u.password === password);
+        if (found) {
+          const demo = { email: found.email, name: found.name };
+          setUser(demo);
+          return { ok: true, user: demo, fallback: true };
+        }
+        // If MSW isn't running (404) and in dev mode, fall back to a local demo user
         if (import.meta.env.DEV) {
           const demo = { email, name: body?.name || "Demo User" };
           setUser(demo);
@@ -41,6 +50,16 @@ export function AuthProvider({ children }) {
       return { ok: true, user: data.user };
     } catch (err) {
       // network or other error -> fallback in dev
+      // Try frontend-only local users store as a last resort
+      const localUsersRaw = localStorage.getItem("__local_users__");
+      const localUsers = localUsersRaw ? JSON.parse(localUsersRaw) : [];
+      const found = localUsers.find((u) => u.email === email && u.password === password);
+      if (found) {
+        const demo = { email: found.email, name: found.name };
+        setUser(demo);
+        return { ok: true, user: demo, fallback: true };
+      }
+
       if (import.meta.env.DEV) {
         const demo = { email, name: "Demo User" };
         setUser(demo);
@@ -60,24 +79,44 @@ export function AuthProvider({ children }) {
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        if (import.meta.env.DEV) {
-          const demo = { email, name: fullName || "New User" };
-          setUser(demo);
-          return { ok: true, user: demo, fallback: true };
+        // backend not available — implement frontend-only signup using localStorage
+        const localUsersRaw = localStorage.getItem("__local_users__");
+        const localUsers = localUsersRaw ? JSON.parse(localUsersRaw) : [];
+        // prevent duplicate emails
+        if (localUsers.find((u) => u.email === email)) {
+          throw new Error("User already exists");
         }
-        throw new Error(body.message || "Signup failed");
+        const newUser = { email, name: fullName || "New User", phone, password };
+        localUsers.push(newUser);
+        localStorage.setItem("__local_users__", JSON.stringify(localUsers));
+        setUser({ email: newUser.email, name: newUser.name });
+        return { ok: true, user: { email: newUser.email, name: newUser.name }, fallback: true };
       }
 
       const data = await res.json();
       setUser(data.user);
       return { ok: true, user: data.user };
     } catch (err) {
-      if (import.meta.env.DEV) {
-        const demo = { email, name: fullName || "New User" };
-        setUser(demo);
-        return { ok: true, user: demo, fallback: true };
+      // try frontend signup fallback if possible
+      try {
+        const localUsersRaw = localStorage.getItem("__local_users__");
+        const localUsers = localUsersRaw ? JSON.parse(localUsersRaw) : [];
+        if (localUsers.find((u) => u.email === email)) {
+          return { ok: false, message: "User already exists" };
+        }
+        const newUser = { email, name: fullName || "New User", phone, password };
+        localUsers.push(newUser);
+        localStorage.setItem("__local_users__", JSON.stringify(localUsers));
+        setUser({ email: newUser.email, name: newUser.name });
+        return { ok: true, user: { email: newUser.email, name: newUser.name }, fallback: true };
+      } catch (e) {
+        if (import.meta.env.DEV) {
+          const demo = { email, name: fullName || "New User" };
+          setUser(demo);
+          return { ok: true, user: demo, fallback: true };
+        }
+        return { ok: false, message: err.message || "Signup failed" };
       }
-      return { ok: false, message: err.message || "Signup failed" };
     }
   };
 
