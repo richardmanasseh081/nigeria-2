@@ -6,7 +6,11 @@ import { useLoading } from "../context/LoadingContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const location = useLocation();
+  // support prefilling email/password when navigated from signup
+  const prefillEmail = location.state?.email ?? location.state?.prefill?.email ?? "";
+  const prefillPassword = location.state?.password ?? location.state?.prefill?.password ?? "";
+  const [formData, setFormData] = useState({ email: prefillEmail, password: prefillPassword });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);

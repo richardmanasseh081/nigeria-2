@@ -55,7 +55,8 @@ export default function Signup() {
       const delay = (ms) => new Promise((r) => setTimeout(r, ms));
       const [res] = await Promise.all([signup({ fullName: formData.fullName, email: formData.email, phone: formData.phone, password: formData.password }), delay(5000)]);
       if (res.ok) {
-        navigate("/");
+        // After successful signup, go to the login page and prefill the form
+        navigate("/login", { state: { email: formData.email, password: formData.password } });
       } else {
         setError(res.message || "Signup failed");
       }
