@@ -22,7 +22,6 @@ export default function Login() {
   };
 
   const { login } = useAuth();
-  const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
   const { show, hide } = useLoading();
