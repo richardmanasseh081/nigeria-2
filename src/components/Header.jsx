@@ -52,7 +52,7 @@ function Header({ cart = [], setShowCart }) {
       try {
         show("Opening...");
         await delay(3000);
-        window.location.href = path;
+        navigate(path);
       } finally {
         hide();
       }
