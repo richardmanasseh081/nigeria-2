@@ -91,7 +91,7 @@ function Header({ cart = [], setShowCart }) {
 
   return (
     <>
-    <header className="flex justify-between items-center p-4 bg-white dark:bg-gray-900 shadow-md relative">
+    <header className="flex justify-between items-center p-2 bg-white dark:bg-gray-900 shadow-md relative">
       {/* Title with dropdown */}
       <div className="relative">
         <button
@@ -109,7 +109,7 @@ function Header({ cart = [], setShowCart }) {
         {showMenu && (
           <div
             ref={menuRef}
-            className="fixed left-0 top-16 bottom-0 w-screen md:w-2/3 lg:w-1/2 bg-white dark:bg-gray-800 shadow-2xl z-50 overflow-hidden"
+            className="fixed left-0 top-14 bottom-0 w-screen md:w-2/3 lg:w-1/2 bg-white dark:bg-gray-800 shadow-2xl z-50 overflow-hidden"
           >
             <div className="flex h-full">
               {/* Sidebar Navigation */}
