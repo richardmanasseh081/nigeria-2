@@ -42,7 +42,7 @@ export const foods = [
   {
     id: 6,
     name: "Suya",
-    price: 2000,
+    price: 4000,
     category: "Grills",
     description: "Spicy grilled beef skewers with spices",
     image: "https://cheflolaskitchen.com/wp-content/uploads/2025/07/Suya.jpg.webp"
@@ -78,5 +78,21 @@ export const foods = [
     category: "Swallows",
     description: "Yam cooked in rich tomato sauce",
     image: "https://terracubes.net/wp-content/uploads/2023/10/Yam-Porridge-700x400.png"
+  },
+  {
+    id: 11,
+    name: "Shawarma",
+    price: 4500,
+    category: "Grills",
+    description: "Your hot sweet shawarma",
+    image: "https://fishandmeat.hk/wp-content/uploads/2025/05/arabic-chicken-shawarma-sandwich-recipe-1747792750.jpg"
+  },
+  {
+    id: 12,
+    name: "Chicken Meat",
+    price: 9000,
+    category: "Sides",
+    description: "Full roasted chicken",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkJhomrkOL9O0HKUPqL8BY8SV8mRlE_87Ktw&s"
   }
 ];

@@ -1,7 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaLeaf, FaTruck, FaSmile, FaClock, FaUsers, FaStar } from "react-icons/fa";
+import { useLoading } from "../context/LoadingContext";
 
 export default function About() {
+  const navigate = useNavigate();
+  const { show, hide } = useLoading();
   const features = [
     { icon: FaLeaf, title: "Fresh Ingredients", desc: "Sourced locally for authenticity and quality" },
     { icon: FaTruck, title: "Fast Delivery", desc: "Hot meals delivered to your door in minutes" },
@@ -19,7 +22,20 @@ export default function About() {
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
       <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 text-white p-8">
-        <Link to="/" className="inline-block mb-4 text-green-100 hover:text-white transition">← Back to Home</Link>
+        <button onClick={() => {
+          const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+          (async () => {
+            try {
+              show("Going back...");
+              await delay(3000);
+              navigate("/");
+            } finally {
+              hide();
+            }
+          })();
+        }} className="inline-block mb-4 text-green-100 hover:text-white transition bg-none border-none cursor-pointer font-inherit">
+          ← Back to Home
+        </button>
         <h1 className="text-5xl font-extrabold mb-2 animate-fade-in">About Naija Kitchen</h1>
         <p className="text-xl text-green-100 animate-fade-in" style={{ animationDelay: "0.2s" }}>
           Bringing authentic Nigerian meals to your table with love and passion

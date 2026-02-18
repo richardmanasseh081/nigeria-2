@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHeart, FaArrowLeft, FaShoppingCart, FaTrash } from "react-icons/fa";
+import { useLoading } from "../context/LoadingContext";
 
 export default function Wishlist() {
   const navigate = useNavigate();
+  const { show, hide } = useLoading();
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -46,9 +48,20 @@ export default function Wishlist() {
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold mb-4">
+          <button onClick={() => {
+            const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+            (async () => {
+              try {
+                show("Going back...");
+                await delay(3000);
+                navigate("/");
+              } finally {
+                hide();
+              }
+            })();
+          }} className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold mb-4 bg-none border-none cursor-pointer">
             <FaArrowLeft /> Back to Home
-          </Link>
+          </button>
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
             <FaHeart className="text-red-600" /> My Wishlist
           </h1>

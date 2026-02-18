@@ -258,9 +258,20 @@ export default function Signup() {
         </div>
 
         {/* Back to Home */}
-        <Link to="/" className="text-white hover:text-green-200 transition mt-6 inline-block font-semibold">
+        <button onClick={() => {
+          const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+          (async () => {
+            try {
+              show("Going back...");
+              await delay(3000);
+              navigate("/");
+            } finally {
+              hide();
+            }
+          })();
+        }} className="text-white hover:text-green-200 transition mt-6 inline-block font-semibold bg-none border-none cursor-pointer">
           ← Back to Home
-        </Link>
+        </button>
       </div>
 
       <style>{`

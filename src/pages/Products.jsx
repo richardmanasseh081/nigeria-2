@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaSearch, FaFilter, FaSort, FaArrowLeft, FaStar, FaShoppingCart, FaHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useLoading } from "../context/LoadingContext";
@@ -7,6 +7,8 @@ import { useLoading } from "../context/LoadingContext";
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 export default function Products() {
+  const navigate = useNavigate();
+  const { show, hide } = useLoading();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("popular");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -29,7 +31,6 @@ export default function Products() {
   ];
 
   const [allProducts, setAllProducts] = useState(defaultProducts);
-  const { show, hide } = useLoading();
 
   useEffect(() => {
     let mounted = true;
@@ -88,9 +89,19 @@ export default function Products() {
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold mb-4">
+          <button onClick={() => {
+            (async () => {
+              try {
+                show("Going back...");
+                await delay(3000);
+                navigate("/");
+              } finally {
+                hide();
+              }
+            })();
+          }} className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold mb-4 bg-none border-none cursor-pointer">
             <FaArrowLeft /> Back to Home
-          </Link>
+          </button>
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">Our Products</h1>
           <p className="text-gray-600 dark:text-gray-400">{filteredProducts.length} delicious items available</p>
         </motion.div>

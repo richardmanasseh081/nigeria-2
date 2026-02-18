@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBox, FaArrowLeft, FaTruck, FaCheckCircle, FaClock, FaMapMarkerAlt } from "react-icons/fa";
+import { useLoading } from "../context/LoadingContext";
 
 export default function OrderTracking() {
   const navigate = useNavigate();
+  const { show, hide } = useLoading();
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -104,9 +106,20 @@ export default function OrderTracking() {
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold mb-4">
+          <button onClick={() => {
+            const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+            (async () => {
+              try {
+                show("Going back...");
+                await delay(3000);
+                navigate("/");
+              } finally {
+                hide();
+              }
+            })();
+          }} className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold mb-4 bg-none border-none cursor-pointer">
             <FaArrowLeft /> Back to Home
-          </Link>
+          </button>
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
             <FaBox className="text-green-600" /> Order Tracking
           </h1>
