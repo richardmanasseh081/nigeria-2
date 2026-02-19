@@ -9,17 +9,17 @@ export default function LoadingOverlay() {
   const imgPath = "/image/image%20icon.jpg";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40" role="status" aria-live="polite">
-      <div className="flex flex-col items-center gap-4 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-green-800" role="status" aria-live="polite">
+      <div className="flex flex-col items-center gap-4">
         {!imgError ? (
           <img
             src={imgPath}
             alt="logo"
             onError={() => setImgError(true)}
-            className="w-16 h-16 animate-spin rounded-full object-cover"
+            className="w-32 h-32 animate-spin rounded-full object-cover"
           />
         ) : (
-          <svg className="w-12 h-12 text-green-600 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg className="w-24 h-24 text-green-600 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
           </svg>
