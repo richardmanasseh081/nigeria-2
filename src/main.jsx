@@ -4,6 +4,8 @@ import App from "./App";
 import "./index.css";
 import { AuthProvider } from "./context/AuthContext";
 import { LoadingProvider } from "./context/LoadingContext";
+import { ThemeProvider } from "./context/ThemeContext";
+import { ToastProvider } from "./context/ToastContext";
 import LoadingOverlay from "./components/LoadingOverlay";
 
 async function init() {
@@ -20,12 +22,16 @@ async function init() {
 
   ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-      <LoadingProvider>
-        <AuthProvider>
-          <App />
-          <LoadingOverlay />
-        </AuthProvider>
-      </LoadingProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <LoadingProvider>
+            <AuthProvider>
+              <App />
+              <LoadingOverlay />
+            </AuthProvider>
+          </LoadingProvider>
+        </ToastProvider>
+      </ThemeProvider>
     </React.StrictMode>
   );
 }

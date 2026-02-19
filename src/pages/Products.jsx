@@ -3,16 +3,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaSearch, FaFilter, FaSort, FaArrowLeft, FaStar, FaShoppingCart, FaHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useLoading } from "../context/LoadingContext";
+import { useToast } from "../context/ToastContext";
+import Pagination from "../components/Pagination";
+import PageTransition from "../components/PageTransition";
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+const ITEMS_PER_PAGE = 6;
 
 export default function Products() {
   const navigate = useNavigate();
   const { show, hide } = useLoading();
+  const { addToast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("popular");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedPrice, setSelectedPrice] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Sample products data with images
   const defaultProducts = [
@@ -74,7 +80,14 @@ export default function Products() {
     else if (sortBy === "popular") filtered.sort((a, b) => b.reviews - a.reviews);
 
     return filtered;
-  }, [searchTerm, selectedCategory, selectedPrice, sortBy]);
+  }, [searchTerm, selectedCategory, selectedPrice, sortBy, allProducts]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const paginatedProducts = useMemo(() => {
+    const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProducts.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
 
   const categories = [
     { id: "all", label: "All", count: allProducts.length },
@@ -85,9 +98,9 @@ export default function Products() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
+    <PageTransition>
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <button onClick={() => {
             (async () => {
@@ -103,7 +116,7 @@ export default function Products() {
             <FaArrowLeft /> Back to Home
           </button>
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">Our Products</h1>
-          <p className="text-gray-600 dark:text-gray-400">{filteredProducts.length} delicious items available</p>
+          <p className="text-gray-600 dark:text-gray-400">{filteredProducts.length} delicious items available (Showing {paginatedProducts.length} on this page)</p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -228,76 +241,90 @@ export default function Products() {
                 </button>
               </motion.div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProducts.map((product, index) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    whileHover={{ y: -10 }}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden group"
-                  >
-                    {/* Featured Badge */}
-                    {product.featured && (
-                      <div className="absolute top-3 left-3 z-10 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold">
-                        ⭐ Featured
-                      </div>
-                    )}
-
-                    {/* Image */}
-                    <div className="relative h-48 overflow-hidden bg-gray-200 dark:bg-gray-700">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                      <button className="absolute top-3 right-3 bg-white dark:bg-gray-700 hover:bg-red-600 hover:text-white text-gray-800 dark:text-gray-300 p-2 rounded-full transition-all shadow-lg hover:scale-110">
-                        <FaHeart />
-                      </button>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4">
-                      <h3 className="text-lg font-bold text-gray-800 dark:text-white group-hover:text-green-600 transition">{product.name}</h3>
-
-                      {/* Rating */}
-                      <div className="flex items-center gap-2 mt-2">
-                        <div className="flex">
-                          {[...Array(5)].map((_, i) => (
-                            <span key={i} className={i < Math.round(product.rating) ? "text-yellow-500" : "text-gray-300"}>
-                              ★
-                            </span>
-                          ))}
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {paginatedProducts.map((product, index) => (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      whileHover={{ y: -10 }}
+                      className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden group"
+                    >
+                      {/* Featured Badge */}
+                      {product.featured && (
+                        <div className="absolute top-3 left-3 z-10 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                          ⭐ Featured
                         </div>
-                        <span className="text-xs text-gray-600 dark:text-gray-400">({product.reviews})</span>
+                      )}
+
+                      {/* Image */}
+                      <div className="relative h-48 overflow-hidden bg-gray-200 dark:bg-gray-700">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                        <button className="absolute top-3 right-3 bg-white dark:bg-gray-700 hover:bg-red-600 hover:text-white text-gray-800 dark:text-gray-300 p-2 rounded-full transition-all shadow-lg hover:scale-110">
+                          <FaHeart />
+                        </button>
                       </div>
 
-                      {/* Price */}
-                      <div className="flex items-center justify-between mt-4">
-                        <p className="text-2xl font-bold text-green-600">₦{product.price.toLocaleString()}</p>
-                      </div>
+                      {/* Content */}
+                      <div className="p-4">
+                        <h3 className="text-lg font-bold text-gray-800 dark:text-white group-hover:text-green-600 transition">{product.name}</h3>
 
-                      {/* Add to Cart */}
-                      <button
-                        onClick={async () => {
-                          show("Adding to cart...");
-                          // simulate network operation with minimum 5s spinner
-                          await delay(5000);
-                          hide();
-                        }}
-                        className="w-full mt-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-2 rounded-lg font-semibold transition-all hover:scale-105 flex items-center justify-center gap-2"
-                      >
-                        <FaShoppingCart /> Add to Cart
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+                        {/* Rating */}
+                        <div className="flex items-center gap-2 mt-2">
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <span key={i} className={i < Math.round(product.rating) ? "text-yellow-500" : "text-gray-300"}>
+                                ★
+                              </span>
+                            ))}
+                          </div>
+                          <span className="text-xs text-gray-600 dark:text-gray-400">({product.reviews})</span>
+                        </div>
+
+                        {/* Price */}
+                        <div className="flex items-center justify-between mt-4">
+                          <p className="text-2xl font-bold text-green-600">₦{product.price.toLocaleString()}</p>
+                        </div>
+
+                        {/* Add to Cart */}
+                        <motion.button
+                          onClick={async () => {
+                            show("Adding to cart...");
+                            await delay(5000);
+                            hide();
+                            addToast(`${product.name} added to cart!`, "success");
+                          }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="w-full mt-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
+                        >
+                          <FaShoppingCart /> Add to Cart
+                        </motion.button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                )}
+              </>
             )}
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   );
 }

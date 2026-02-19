@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FaLeaf, FaTruck, FaSmile, FaClock, FaUsers, FaStar } from "react-icons/fa";
+import { motion } from "framer-motion";
 import { useLoading } from "../context/LoadingContext";
+import FAQAccordion from "../components/FAQAccordion";
 
 export default function About() {
   const navigate = useNavigate();
@@ -79,15 +81,21 @@ export default function About() {
           <h2 className="text-4xl font-bold text-green-700 dark:text-green-300 mb-12 text-center">Why Choose Us</h2>
           <div className="grid md:grid-cols-4 gap-8">
             {features.map((feature, idx) => (
-              <div
+              <motion.div
                 key={idx}
-                className="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 animate-fade-in-up"
-                style={{ animationDelay: `${idx * 0.1}s` }}
+                whileHover={{ scale: 1.08, y: -10 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300"
               >
-                <feature.icon className="text-4xl text-green-600 dark:text-green-300 mb-4" />
+                <motion.div
+                  whileHover={{ rotate: 10, scale: 1.2 }}
+                  className="text-4xl text-green-600 dark:text-green-300 mb-4"
+                >
+                  <feature.icon />
+                </motion.div>
                 <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{feature.title}</h3>
                 <p className="text-gray-600 dark:text-gray-300">{feature.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -98,52 +106,77 @@ export default function About() {
         <h2 className="text-4xl font-bold text-green-700 dark:text-green-300 mb-12 text-center">Meet Our Team</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {team.map((member, idx) => (
-            <div
+            <motion.div
               key={idx}
-              className="bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-700 dark:to-gray-600 p-8 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-2 transition-all duration-300 text-center"
+              whileHover={{ y: -15, boxShadow: "0 20px 40px rgba(0,0,0,0.2)" }}
+              className="bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-700 dark:to-gray-600 p-8 rounded-xl shadow-md transition-all duration-300 text-center"
             >
-              <div className="w-20 h-20 bg-green-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold hover:bg-green-700 transition">
+              <motion.div
+                whileHover={{ scale: 1.15, rotate: 360 }}
+                transition={{ duration: 0.5 }}
+                className="w-20 h-20 bg-green-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold hover:bg-green-700 transition cursor-pointer"
+              >
                 {member.name.charAt(0)}
-              </div>
+              </motion.div>
               <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-1">{member.name}</h3>
               <p className="text-green-600 dark:text-green-300 font-semibold mb-3">{member.role}</p>
               <p className="text-gray-700 dark:text-gray-300">{member.desc}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* Values Section */}
-      <section className="bg-green-600 dark:bg-green-800 text-white py-16">
+      <section className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 text-white py-16">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-4xl font-bold mb-12 text-center">Our Core Values</h2>
+          <h2 className="text-4xl font-bold mb-12 text-center animate-fade-in">Our Core Values</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white bg-opacity-10 backdrop-blur p-8 rounded-xl hover:bg-opacity-20 transition duration-300">
-              <h3 className="text-2xl font-bold mb-3">Authenticity</h3>
-              <p>We honor traditional Nigerian recipes and cooking methods passed down through generations.</p>
-            </div>
-            <div className="bg-white bg-opacity-10 backdrop-blur p-8 rounded-xl hover:bg-opacity-20 transition duration-300">
-              <h3 className="text-2xl font-bold mb-3">Quality</h3>
-              <p>Every meal is prepared with the finest fresh ingredients and meticulous attention to detail.</p>
-            </div>
-            <div className="bg-white bg-opacity-10 backdrop-blur p-8 rounded-xl hover:bg-opacity-20 transition duration-300">
-              <h3 className="text-2xl font-bold mb-3">Community</h3>
-              <p>We celebrate Nigerian culture and build connections through the universal language of food.</p>
-            </div>
+            <motion.div
+              whileHover={{ scale: 1.08, y: -10 }}
+              className="bg-gradient-to-br from-green-700 to-green-800 p-8 rounded-2xl hover:from-green-600 hover:to-green-700 transition duration-300 shadow-lg"
+            >
+              <h3 className="text-2xl font-bold mb-3">✨ Authenticity</h3>
+              <p className="text-lg leading-relaxed">We honor traditional Nigerian recipes and cooking methods passed down through generations.</p>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.08, y: -10 }}
+              className="bg-gradient-to-br from-green-700 to-green-800 p-8 rounded-2xl hover:from-green-600 hover:to-green-700 transition duration-300 shadow-lg"
+            >
+              <h3 className="text-2xl font-bold mb-3">🏆 Quality</h3>
+              <p className="text-lg leading-relaxed">Every meal is prepared with the finest fresh ingredients and meticulous attention to detail.</p>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.08, y: -10 }}
+              className="bg-gradient-to-br from-green-700 to-green-800 p-8 rounded-2xl hover:from-green-600 hover:to-green-700 transition duration-300 shadow-lg"
+            >
+              <h3 className="text-2xl font-bold mb-3">🤝 Community</h3>
+              <p className="text-lg leading-relaxed">We celebrate Nigerian culture and build connections through the universal language of food.</p>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="max-w-6xl mx-auto px-6 py-16 text-center">
-        <h2 className="text-4xl font-bold text-green-700 dark:text-green-300 mb-6">Ready to Taste Authentic Nigeria?</h2>
-        <p className="text-xl text-gray-700 dark:text-gray-300 mb-8">Start your journey with us today and experience food that tastes like home.</p>
-        <Link
-          to="/"
-          className="inline-block px-8 py-4 bg-green-600 text-white rounded-lg font-bold text-lg hover:bg-green-700 hover:scale-105 transition-all duration-300 shadow-lg"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
-          Order Now
-        </Link>
+          <h2 className="text-4xl font-bold text-green-700 dark:text-green-300 mb-6">Ready to Taste Authentic Nigeria?</h2>
+          <p className="text-xl text-gray-700 dark:text-gray-300 mb-8">Start your journey with us today and experience food that tastes like home.</p>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Link
+              to="/"
+              className="inline-block px-8 py-4 bg-green-600 text-white rounded-lg font-bold text-lg hover:bg-green-700 transition-all duration-300 shadow-lg"
+            >
+              Order Now
+            </Link>
+          </motion.div>
+        </motion.div>
       </section>
 
       <style>{`
@@ -176,6 +209,9 @@ export default function About() {
           animation: fade-in-up 0.6s ease-out;
         }
       `}</style>
+
+      {/* FAQ Section */}
+      <FAQAccordion />
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { FaShoppingCart, FaChevronDown, FaHome, FaBox, FaChartBar, FaBullhorn, FaClipboardList, FaInfoCircle, FaPhone, FaCog, FaUser, FaSignInAlt, FaHeart, FaStar } from "react-icons/fa";
+import { FaShoppingCart, FaChevronDown, FaHome, FaBox, FaChartBar, FaBullhorn, FaClipboardList, FaInfoCircle, FaPhone, FaCog, FaUser, FaSignInAlt, FaHeart, FaStar, FaMoon, FaSun } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoading } from "../context/LoadingContext";
+import { useTheme } from "../context/ThemeContext";
 import InfoModal from "./InfoModal";
 
 function Header({ cart = [], setShowCart }) {
@@ -12,6 +13,7 @@ function Header({ cart = [], setShowCart }) {
   const [user, setUser] = useState(null);
   const menuRef = useRef(null);
   const titleRef = useRef(null);
+  const { isDark, toggleTheme } = useTheme();
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -217,6 +219,19 @@ function Header({ cart = [], setShowCart }) {
       </div>
 
       <div className="flex items-center gap-4">
+        {/* Dark Mode Toggle */}
+        <button
+          onClick={toggleTheme}
+          className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+          aria-label="Toggle dark mode"
+        >
+          {isDark ? (
+            <FaSun className="text-yellow-500 text-lg" />
+          ) : (
+            <FaMoon className="text-gray-700 text-lg" />
+          )}
+        </button>
+
         {/* About Us Link */}
         <Link 
           to="/about"

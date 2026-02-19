@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaStar, FaArrowLeft, FaEdit, FaTrash } from "react-icons/fa";
+import { motion } from "framer-motion";
 import { useLoading } from "../context/LoadingContext";
+import { useToast } from "../context/ToastContext";
 
 export default function Reviews() {
   const navigate = useNavigate();
   const { show, hide } = useLoading();
+  const { addToast } = useToast();
   const [reviews, setReviews] = useState([]);
   const [user, setUser] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -42,13 +45,14 @@ export default function Reviews() {
     localStorage.setItem("reviews", JSON.stringify(updated));
     setFormData({ foodName: "", rating: 5, comment: "" });
     setShowForm(false);
-    alert("Review posted successfully!");
+    addToast("Review posted successfully! ⭐", "success");
   };
 
   const deleteReview = (id) => {
     const updated = reviews.filter(r => r.id !== id);
     setReviews(updated);
     localStorage.setItem("reviews", JSON.stringify(updated));
+    addToast("Review deleted", "info");
   };
 
   if (!user) return <div className="text-center py-20">Loading...</div>;
@@ -81,16 +85,22 @@ export default function Reviews() {
         </div>
 
         {/* Post Review Button */}
-        <button
+        <motion.button
           onClick={() => setShowForm(!showForm)}
-          className="mb-8 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="mb-8 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
         >
           {showForm ? "Cancel" : "+ Write a Review"}
-        </button>
+        </motion.button>
 
         {/* Review Form */}
         {showForm && (
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8 animate-fade-in">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8"
+          >
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Write a Review</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -109,16 +119,18 @@ export default function Reviews() {
                 <label className="block text-sm font-semibold text-gray-700 dark:text-white mb-2">Rating</label>
                 <div className="flex gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <button
+                    <motion.button
                       key={star}
                       type="button"
                       onClick={() => setFormData({ ...formData, rating: star })}
+                      whileHover={{ scale: 1.3 }}
+                      whileTap={{ scale: 0.9 }}
                       className={`text-3xl transition-all ${
-                        star <= formData.rating ? "text-yellow-500 scale-110" : "text-gray-300"
+                        star <= formData.rating ? "text-yellow-500" : "text-gray-300"
                       }`}
                     >
                       ★
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
               </div>
@@ -135,14 +147,16 @@ export default function Reviews() {
                 />
               </div>
 
-              <button
+              <motion.button
                 type="submit"
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all hover:scale-105"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all"
               >
                 Post Review
-              </button>
+              </motion.button>
             </form>
-          </div>
+          </motion.div>
         )}
 
         {/* Reviews List */}
@@ -155,10 +169,12 @@ export default function Reviews() {
             </div>
           ) : (
             userReviews.map((review, index) => (
-              <div
+              <motion.div
                 key={review.id}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300 animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
@@ -188,7 +204,7 @@ export default function Reviews() {
                 <div className="mt-4 pt-4 border-t dark:border-gray-700">
                   <p className="text-sm text-gray-600 dark:text-gray-400">By {review.author}</p>
                 </div>
-              </div>
+              </motion.div>
             ))
           )}
         </div>
