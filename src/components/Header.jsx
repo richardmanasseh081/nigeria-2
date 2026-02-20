@@ -222,13 +222,13 @@ function Header({ cart = [], setShowCart }) {
         {/* Dark Mode Toggle */}
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+          className="p-2 rounded-lg bg-green-600 hover:bg-green-700 transition"
           aria-label="Toggle dark mode"
         >
           {isDark ? (
-            <FaSun className="text-yellow-500 text-lg" />
+            <FaSun className="text-yellow-400 text-lg" />
           ) : (
-            <FaMoon className="text-gray-700 text-lg" />
+            <FaMoon className="text-white text-lg" />
           )}
         </button>
 
