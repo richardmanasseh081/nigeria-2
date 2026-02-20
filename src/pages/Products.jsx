@@ -43,7 +43,7 @@ export default function Products() {
     (async () => {
       show("Loading products...");
       try {
-        const res = await fetch("/products");
+        const res = await fetch("/api/foods.php");
         const data = await res.json();
         if (mounted) setAllProducts(data?.products || defaultProducts);
       } catch (e) {

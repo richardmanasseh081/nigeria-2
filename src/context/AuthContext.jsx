@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
 
   const login = async ({ email, password }) => {
     try {
-      const res = await fetch("/auth/login", {
+      const res = await fetch("/api/login.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -71,7 +71,7 @@ export function AuthProvider({ children }) {
 
   const signup = async ({ fullName, email, phone, password }) => {
     try {
-      const res = await fetch("/auth/signup", {
+      const res = await fetch("/api/signup.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fullName, email, phone, password }),
