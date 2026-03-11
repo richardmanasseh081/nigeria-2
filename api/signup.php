@@ -1,60 +1,56 @@
 <?php
-require_once 'config.php';
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type");
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['error' => 'Invalid request method']);
+require_once "config.php";
+
+// Read JSON input
+$data = json_decode(file_get_contents("php://input"), true);
+
+$fullName = trim($data["fullName"] ?? "");
+$email = trim($data["email"] ?? "");
+$phone = trim($data["phone"] ?? "");
+$password = $data["password"] ?? "";
+
+// Validate
+if(!$fullName || !$email || !$phone || !$password){
+    echo json_encode(["status"=>"error","message"=>"Missing fields"]);
     exit;
 }
 
-$data = json_decode(file_get_contents('php://input'), true);
-$fullName = trim($data['fullName'] ?? '');
-$email = trim($data['email'] ?? '');
-$phone = trim($data['phone'] ?? '');
-$password = $data['password'] ?? '';
-
-if (!$email) {
-    echo json_encode(['message' => 'Missing email']);
+// Check if email already exists
+$stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+$stmt->execute([$email]);
+if($stmt->fetch()){
+    echo json_encode(["status"=>"error","message"=>"Email already registered"]);
     exit;
 }
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['message' => 'Invalid email format']);
-    exit;
-}
+// Hash password
+$hash = password_hash($password, PASSWORD_DEFAULT);
 
-if (strlen($password) < 6) {
-    echo json_encode(['message' => 'Password must be at least 6 characters']);
-    exit;
-}
-
-if (strlen($fullName) < 2) {
-    echo json_encode(['message' => 'Full name must be at least 2 characters']);
-    exit;
-}
-
+// Insert into database
 try {
-    // Check if email already exists
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-    if ($stmt->fetch()) {
-        echo json_encode(['message' => 'Email already registered']);
-        exit;
-    }
+    $stmt = $pdo->prepare("INSERT INTO users(full_name,email,phone,password_hash) VALUES(?,?,?,?)");
+    $stmt->execute([$fullName, $email, $phone, $hash]);
 
-    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $pdo->prepare("INSERT INTO users (full_name, email, phone, password_hash) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$fullName, $email, $phone, $passwordHash]);
     $userId = $pdo->lastInsertId();
 
     echo json_encode([
-        'user' => [
-            'id' => $userId,
-            'email' => $email,
-            'name' => $fullName,
-            'phone' => $phone
+        "status"=>"success",
+        "message"=>"User created",
+        "user"=>[
+            "id" => $userId,
+            "fullName"=>$fullName,
+            "email"=>$email,
+            "phone"=>$phone
         ]
     ]);
-} catch (Exception $e) {
-    echo json_encode(['error' => $e->getMessage()]);
+} catch(PDOException $e){
+    echo json_encode([
+        "status"=>"error",
+        "message"=>"Database error: ".$e->getMessage()
+    ]);
 }
-?>

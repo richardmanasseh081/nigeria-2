@@ -1,24 +1,22 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Content-Type: application/json");
+$host = "localhost";
+$db   = "ecommerce";   // Make sure your database is named 'ecommerce'
+$user = "root";
+$pass = "";
+$charset = "utf8mb4";
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    exit(0);
-}
-
-// Database configuration
-$host = 'localhost';
-$dbname = 'nigeria_food_app';
-$username = 'root';
-$password = '';
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+];
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo json_encode(['error' => 'Database connection failed: ' . $e->getMessage()]);
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch(PDOException $e){
+    echo json_encode([
+        "status" => "error",
+        "message" => "DB connection failed: ".$e->getMessage()
+    ]);
     exit;
 }
-?>

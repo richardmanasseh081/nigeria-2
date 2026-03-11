@@ -1,42 +1,55 @@
 <?php
-require_once 'config.php';
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type");
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['error' => 'Invalid request method']);
+require_once "config.php";
+
+// Read JSON input
+$data = json_decode(file_get_contents("php://input"), true);
+
+$email = trim($data["email"] ?? "");
+$password = $data["password"] ?? "";
+
+// Check required fields
+if(!$email || !$password){
+    echo json_encode([
+        "status" => "error",
+        "message" => "Missing fields"
+    ]);
     exit;
 }
 
-$data = json_decode(file_get_contents('php://input'), true);
-$email = trim($data['email'] ?? '');
-$password = $data['password'] ?? '';
+// Lookup user by email
+$stmt = $pdo->prepare("SELECT id, full_name, email, phone, password_hash FROM users WHERE email = ?");
+$stmt->execute([$email]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$email || !$password) {
-    echo json_encode(['message' => 'Missing credentials']);
+if(!$user){
+    echo json_encode([
+        "status" => "error",
+        "message" => "User not found"
+    ]);
     exit;
 }
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['message' => 'Invalid email format']);
+// Verify password
+if(!password_verify($password, $user["password_hash"])){
+    echo json_encode([
+        "status" => "error",
+        "message" => "Incorrect password"
+    ]);
     exit;
 }
 
-if (strlen($password) < 6) {
-    echo json_encode(['message' => 'Password must be at least 6 characters']);
-    exit;
-}
-
-try {
-    $stmt = $pdo->prepare("SELECT id, full_name, email, password_hash FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($user && password_verify($password, $user['password_hash'])) {
-        unset($user['password_hash']); // Don't send hash back
-        echo json_encode(['user' => $user]);
-    } else {
-        echo json_encode(['message' => 'Invalid credentials']);
-    }
-} catch (Exception $e) {
-    echo json_encode(['error' => $e->getMessage()]);
-}
-?>
+// Success: return full user info including phone
+echo json_encode([
+    "status" => "success",
+    "user" => [
+        "id" => $user["id"],
+        "fullName" => $user["full_name"],
+        "email" => $user["email"],
+        "phone" => $user["phone"] ?? ""
+    ]
+]);
