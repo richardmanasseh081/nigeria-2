@@ -22,13 +22,38 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  // ✅ Updated handleSubmit to send to your API
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate form submission
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    setTimeout(() => setSubmitted(false), 4000);
+
+    try {
+      const res = await fetch("http://localhost/api/contact.php", { // <-- change path if needed
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        setSubmitted(true);
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+        setTimeout(() => setSubmitted(false), 4000);
+      } else {
+        alert(data.message);
+      }
+
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   const contactMethods = [
@@ -113,7 +138,7 @@ export default function Contact() {
       <section className="bg-gray-100 dark:bg-gray-800 py-16">
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center">Send us a Message</h2>
-          
+
           {submitted && (
             <div className="mb-8 p-6 bg-green-100 dark:bg-green-900 rounded-xl border-2 border-green-600 flex items-center gap-4 animate-fade-in">
               <FaCheckCircle className="text-green-600 text-3xl" />
@@ -127,9 +152,7 @@ export default function Contact() {
           <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-lg space-y-6">
             {/* Name */}
             <div className="animate-fade-in-up" style={{ animationDelay: "0s" }}>
-              <label className="block text-lg font-semibold text-gray-700 dark:text-white mb-2">
-                Full Name
-              </label>
+              <label className="block text-lg font-semibold text-gray-700 dark:text-white mb-2">Full Name</label>
               <input
                 type="text"
                 name="name"
@@ -143,9 +166,7 @@ export default function Contact() {
 
             {/* Email */}
             <div className="animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-              <label className="block text-lg font-semibold text-gray-700 dark:text-white mb-2">
-                Email Address
-              </label>
+              <label className="block text-lg font-semibold text-gray-700 dark:text-white mb-2">Email Address</label>
               <input
                 type="email"
                 name="email"
@@ -159,9 +180,7 @@ export default function Contact() {
 
             {/* Subject */}
             <div className="animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-              <label className="block text-lg font-semibold text-gray-700 dark:text-white mb-2">
-                Subject
-              </label>
+              <label className="block text-lg font-semibold text-gray-700 dark:text-white mb-2">Subject</label>
               <input
                 type="text"
                 name="subject"
@@ -175,9 +194,7 @@ export default function Contact() {
 
             {/* Message */}
             <div className="animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-              <label className="block text-lg font-semibold text-gray-700 dark:text-white mb-2">
-                Message
-              </label>
+              <label className="block text-lg font-semibold text-gray-700 dark:text-white mb-2">Message</label>
               <textarea
                 name="message"
                 value={formData.message}
@@ -206,22 +223,10 @@ export default function Contact() {
         <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-12 text-center">Frequently Asked Questions</h2>
         <div className="grid md:grid-cols-2 gap-8">
           {[
-            {
-              q: "What are your delivery hours?",
-              a: "We deliver from 10 AM to 10 PM daily. Orders are typically delivered within 30 minutes of placement.",
-            },
-            {
-              q: "Do you offer vegetarian options?",
-              a: "Yes! We have a variety of vegetarian Nigerian dishes. Check our menu for all available options.",
-            },
-            {
-              q: "Can I customize my order?",
-              a: "Absolutely! We can modify portions, ingredients, and spice levels. Just let us know in the special instructions.",
-            },
-            {
-              q: "What payment methods do you accept?",
-              a: "We accept cash on delivery, Paystack, and all major credit/debit cards for online orders.",
-            },
+            { q: "What are your delivery hours?", a: "We deliver from 10 AM to 10 PM daily. Orders are typically delivered within 30 minutes of placement." },
+            { q: "Do you offer vegetarian options?", a: "Yes! We have a variety of vegetarian Nigerian dishes. Check our menu for all available options." },
+            { q: "Can I customize my order?", a: "Absolutely! We can modify portions, ingredients, and spice levels. Just let us know in the special instructions." },
+            { q: "What payment methods do you accept?", a: "We accept cash on delivery, Paystack, and all major credit/debit cards for online orders." }
           ].map((faq, idx) => (
             <div
               key={idx}
@@ -236,21 +241,10 @@ export default function Contact() {
       </section>
 
       <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes fade-in-up {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.8s ease-out;
-        }
-        .animate-fade-in-up {
-          animation: fade-in-up 0.6s ease-out forwards;
-          opacity: 0;
-        }
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fade-in 0.8s ease-out; }
+        .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; opacity: 0; }
       `}</style>
     </div>
   );
