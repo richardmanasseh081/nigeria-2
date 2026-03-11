@@ -32,7 +32,7 @@ try {
     $stmt->execute([$name, $email, $subject, $message]);
 
     // Send email notification
-    $to = "support@naijakitchen.com"; // <-- CHANGE this to your email
+    $to = "richardmanasseh081@gmail.com"; // <-- CHANGE this to your email
     $email_subject = "New Contact Message: $subject";
 
     $email_body = "You received a new message:\n\n".
