@@ -1,17 +1,24 @@
 <?php
 // Handle preflight CORS request
+
+// Set CORS headers to allow requests from your deployed frontend
+$allowed_origin = "https://nigeria-2.vercel.app";
+if (isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['HTTP_ORIGIN'] === $allowed_origin) {
+    header("Access-Control-Allow-Origin: $allowed_origin");
+    header("Vary: Origin");
+} else {
+    header("Access-Control-Allow-Origin: $allowed_origin"); // fallback, only allow your frontend
+    header("Vary: Origin");
+}
+header("Content-Type: application/json");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
+// Handle preflight CORS request
 if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: POST, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type");
     http_response_code(200);
     exit;
 }
-
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
 
 // ─── Load PHPMailer ───────────────────────────────────────────────────────────
 // Make sure you have PHPMailer in your project.
