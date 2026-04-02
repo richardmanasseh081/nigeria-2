@@ -23,18 +23,29 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost/nigeria2/api/login.php", {
+
+      // Dynamic API base URL
+      const API_BASE =
+        process.env.REACT_APP_API_URL ||
+        (window.location.hostname === "localhost"
+          ? "http://localhost/nigeria2/api"
+          : "https://your-vercel-domain.vercel.app/api");
+
+      const res = await fetch(`${API_BASE}/login.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email, password: formData.password }),
       });
 
+
       let data;
       try {
         data = await res.json();
-      } catch {
+      } catch (err) {
         setError("Server returned invalid response");
         setLoading(false);
+        // Log error for debugging
+        console.error("Login response parse error", err);
         return;
       }
 
@@ -47,13 +58,16 @@ export default function Login() {
           profilePicture: null,
         };
         localStorage.setItem("user", JSON.stringify(user));
-
         navigate("/profile"); // Go directly to Profile page
       } else {
         setError(data.message || "Login failed");
+        // Log error for debugging
+        console.error("Login failed", data);
       }
-    } catch {
+    } catch (err) {
       setError("Network error, try again");
+      // Log error for debugging
+      console.error("Login network error", err);
     } finally {
       setLoading(false);
     }
