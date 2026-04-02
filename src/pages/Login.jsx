@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaEnvelope, FaLock, FaUserPlus } from "react-icons/fa";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -59,37 +60,58 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-green-600 p-4">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h1 className="text-3xl font-bold mb-4 text-center">Login</h1>
-        {error && <div className="text-red-600 font-semibold mb-4">{error}</div>}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-400 to-green-700 p-4">
+      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md flex flex-col gap-6">
+        <div className="flex flex-col items-center gap-2">
+          <div className="bg-green-100 text-green-600 rounded-full p-4 mb-2">
+            <FaLock size={32} />
+          </div>
+          <h1 className="text-3xl font-extrabold mb-1 text-center">Sign In</h1>
+          <p className="text-gray-500 text-center">Welcome back! Please login to your account.</p>
+        </div>
+        {error && <div className="text-red-600 font-semibold mb-2 text-center">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            autoComplete="off"
-            className="w-full border px-3 py-2 rounded"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            autoComplete="new-password"
-            className="w-full border px-3 py-2 rounded"
-          />
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500"><FaEnvelope /></span>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              autoComplete="off"
+              className="w-full border pl-10 pr-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+          </div>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500"><FaLock /></span>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              autoComplete="new-password"
+              className="w-full border pl-10 pr-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+          </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-600 text-white py-2 rounded font-bold"
+            className="w-full bg-green-600 hover:bg-green-700 transition text-white py-2 rounded-lg font-bold shadow"
           >
             {loading ? "Signing in..." : "Login"}
           </button>
         </form>
+        <div className="text-center mt-2">
+          <span className="text-gray-600">Don't have an account?</span>
+          <button
+            onClick={() => navigate("/signup")}
+            className="ml-2 inline-flex items-center gap-2 text-green-700 hover:underline font-semibold"
+          >
+            <FaUserPlus /> Register
+          </button>
+        </div>
       </div>
     </div>
   );

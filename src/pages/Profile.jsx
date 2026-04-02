@@ -8,6 +8,8 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({});
   const [activeTab, setActiveTab] = useState("profile"); // profile | orders | settings
+  // Support multiple profile pictures
+  const [gallery, setGallery] = useState([]);
 
   // Load user from localStorage
   useEffect(() => {
@@ -19,6 +21,7 @@ export default function Profile() {
     const parsedUser = JSON.parse(storedUser);
     setUser(parsedUser);
     setEditData(parsedUser);
+    setGallery(parsedUser.gallery || (parsedUser.profilePicture ? [parsedUser.profilePicture] : []));
   }, [navigate]);
 
   const handleLogout = () => {
@@ -27,23 +30,42 @@ export default function Profile() {
   };
 
   const handleSaveProfile = () => {
-    localStorage.setItem("user", JSON.stringify(editData));
-    setUser(editData);
+    const updatedUser = { ...editData, gallery };
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setUser(updatedUser);
     setIsEditing(false);
   };
 
+  // Change main profile picture
   const handleProfilePictureChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (event) => {
       const imageData = event.target?.result;
-      const updatedUser = { ...editData, profilePicture: imageData };
-      setEditData(updatedUser);
-      setUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setEditData((prev) => ({ ...prev, profilePicture: imageData }));
+      setGallery((prev) => [imageData, ...prev.filter((img) => img !== imageData)]);
     };
     reader.readAsDataURL(file);
+  };
+
+  // Add more pictures to gallery
+  const handleAddGalleryPics = (e) => {
+    const files = Array.from(e.target.files || []);
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageData = event.target?.result;
+        setGallery((prev) => (prev.includes(imageData) ? prev : [...prev, imageData]));
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // Set main profile picture from gallery
+  const handleSetMainPic = (img) => {
+    setEditData((prev) => ({ ...prev, profilePicture: img }));
+    setGallery((prev) => [img, ...prev.filter((i) => i !== img)]);
   };
 
 
@@ -123,7 +145,9 @@ export default function Profile() {
           {activeTab === "profile" && (
             <div className="bg-white p-8 rounded-2xl shadow-lg">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">Profile Information</h2>
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <FaUser className="text-green-600" /> Profile Information
+                </h2>
                 <button
                   onClick={() => setIsEditing(!isEditing)}
                   className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
@@ -131,49 +155,121 @@ export default function Profile() {
                   <FaEdit /> {isEditing ? "Cancel" : "Edit"}
                 </button>
               </div>
-              {isEditing ? (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block mb-1 font-semibold">Full Name</label>
-                    <input
-                      type="text"
-                      value={editData.name || ""}
-                      onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                      className="w-full px-3 py-2 border rounded"
+              <div className="flex flex-col md:flex-row gap-8">
+                {/* Profile Pic and Gallery */}
+                <div className="flex flex-col items-center gap-4 w-full md:w-1/3">
+                  <div className="relative group">
+                    <img
+                      src={editData.profilePicture || "/public/image/default-profile.png"}
+                      alt="Profile"
+                      className="w-32 h-32 rounded-full object-cover border-4 border-green-500 shadow-lg"
                     />
+                    {isEditing && (
+                      <label className="absolute bottom-2 right-2 bg-blue-600 hover:bg-blue-700 p-2 rounded-full cursor-pointer shadow group-hover:scale-110 transition">
+                        <FaCamera className="text-white" />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleProfilePictureChange}
+                          className="hidden"
+                        />
+                      </label>
+                    )}
                   </div>
-                  <div>
-                    <label className="block mb-1 font-semibold">Email</label>
-                    <input
-                      type="email"
-                      value={editData.email || ""}
-                      onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                      className="w-full px-3 py-2 border rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-1 font-semibold">Phone</label>
-                    <input
-                      type="text"
-                      value={editData.phone || ""}
-                      onChange={(e) => setEditData({ ...editData, phone: e.target.value })}
-                      className="w-full px-3 py-2 border rounded"
-                    />
-                  </div>
-                  <button
-                    onClick={handleSaveProfile}
-                    className="w-full bg-green-600 text-white py-2 rounded font-bold"
-                  >
-                    Save Changes
-                  </button>
+                  {/* Gallery Thumbnails */}
+                  {gallery.length > 1 && (
+                    <div className="flex gap-2 flex-wrap justify-center">
+                      {gallery.map((img, idx) => (
+                        <img
+                          key={idx}
+                          src={img}
+                          alt={`Profile ${idx + 1}`}
+                          className={`w-12 h-12 rounded-full object-cover border-2 cursor-pointer ${img === editData.profilePicture ? "border-green-600" : "border-gray-300"}`}
+                          onClick={() => isEditing && handleSetMainPic(img)}
+                          title={img === editData.profilePicture ? "Main" : "Set as main"}
+                        />
+                      ))}
+                    </div>
+                  )}
+                  {isEditing && (
+                    <label className="mt-2 text-green-700 hover:underline cursor-pointer text-sm font-semibold">
+                      + Add More Photos
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleAddGalleryPics}
+                        className="hidden"
+                      />
+                    </label>
+                  )}
                 </div>
-              ) : (
-                <div className="space-y-2">
-                  <p><strong>Name:</strong> {user.name}</p>
-                  <p><strong>Email:</strong> {user.email}</p>
-                  <p><strong>Phone:</strong> {user.phone || "Not provided"}</p>
+                {/* Info Fields */}
+                <div className="flex-1 space-y-4">
+                  {isEditing ? (
+                    <>
+                      <div>
+                        <label className="block mb-1 font-semibold">Full Name</label>
+                        <input
+                          type="text"
+                          value={editData.name || ""}
+                          onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                          className="w-full px-3 py-2 border rounded"
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-1 font-semibold">Email</label>
+                        <input
+                          type="email"
+                          value={editData.email || ""}
+                          onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                          className="w-full px-3 py-2 border rounded"
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-1 font-semibold">Phone</label>
+                        <input
+                          type="text"
+                          value={editData.phone || ""}
+                          onChange={(e) => setEditData({ ...editData, phone: e.target.value })}
+                          className="w-full px-3 py-2 border rounded"
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-1 font-semibold">Address</label>
+                        <input
+                          type="text"
+                          value={editData.address || ""}
+                          onChange={(e) => setEditData({ ...editData, address: e.target.value })}
+                          className="w-full px-3 py-2 border rounded"
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-1 font-semibold">Bio</label>
+                        <textarea
+                          value={editData.bio || ""}
+                          onChange={(e) => setEditData({ ...editData, bio: e.target.value })}
+                          className="w-full px-3 py-2 border rounded min-h-[60px]"
+                        />
+                      </div>
+                      <button
+                        onClick={handleSaveProfile}
+                        className="w-full bg-green-600 text-white py-2 rounded font-bold mt-2"
+                      >
+                        Save Changes
+                      </button>
+                    </>
+                  ) : (
+                    <div className="space-y-2 text-lg">
+                      <div><span className="font-semibold">Name:</span> {user.name}</div>
+                      <div><span className="font-semibold">Email:</span> {user.email}</div>
+                      <div><span className="font-semibold">Phone:</span> {user.phone || "Not provided"}</div>
+                      <div><span className="font-semibold">Address:</span> {user.address || "Not provided"}</div>
+                      <div><span className="font-semibold">Bio:</span> {user.bio || "No bio yet."}</div>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           )}
           {activeTab === "orders" && (
