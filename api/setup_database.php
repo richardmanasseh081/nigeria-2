@@ -1,6 +1,8 @@
 <?php
+header("Content-Type: application/json");
+
 $host = "localhost";
-$db   = "ecommerce";
+$db   = "ecommerce";  // Using your existing database
 $user = "root";
 $pass = "";
 
@@ -8,25 +10,28 @@ try {
     $pdo = new PDO("mysql:host=$host;charset=utf8", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Create database
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS $db");
+    // Use existing ecommerce database
     $pdo->exec("USE $db");
 
-    // Create users table
-    $pdo->exec("
-        CREATE TABLE IF NOT EXISTS users (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            full_name VARCHAR(255) NOT NULL,
-            email VARCHAR(255) UNIQUE NOT NULL,
-            phone VARCHAR(20),
-            password_hash VARCHAR(255) NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        )
-    ");
+    // Read and execute SQL file
+    $sqlFile = __DIR__ . "/../database_setup.sql";
+    
+    if (!file_exists($sqlFile)) {
+        echo json_encode(["status" => "error", "message" => "SQL file not found"]);
+        exit;
+    }
+    
+    $sql = file_get_contents($sqlFile);
+    $pdo->exec($sql);
 
-    echo "Database and users table setup complete";
+    echo json_encode([
+        "status" => "success", 
+        "message" => "Tables added to '$db' database successfully!"
+    ]);
 
-} catch(PDOException $e){
-    echo "Error: " . $e->getMessage();
+} catch(PDOException $e) {
+    echo json_encode([
+        "status" => "error", 
+        "message" => $e->getMessage()
+    ]);
 }

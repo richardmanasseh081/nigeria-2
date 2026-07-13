@@ -39,7 +39,7 @@ export default function Marketing() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
+    <div className="min-h-screen bg-linear-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
@@ -67,7 +67,7 @@ export default function Marketing() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ y: -5 }}
-                className={`bg-gradient-to-br ${colors[stat.color]} text-white rounded-2xl p-6 shadow-lg`}
+                className={`bg-linear-to-br ${colors[stat.color]} text-white rounded-2xl p-6 shadow-lg`}
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -83,7 +83,7 @@ export default function Marketing() {
 
         {/* Create Campaign Button */}
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="mb-8">
-          <button className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-3 rounded-lg font-bold transition-all hover:scale-105 flex items-center gap-2">
+          <button className="bg-linear-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-3 rounded-lg font-bold transition-all hover:scale-105 flex items-center gap-2">
             <FaBullhorn /> Create New Campaign
           </button>
         </motion.div>
@@ -192,7 +192,7 @@ export default function Marketing() {
                     transition={{ duration: 0.5 }}
                   >
                     <motion.div
-                      className="h-full bg-gradient-to-r from-green-500 to-green-600"
+                      className="h-full bg-linear-to-r from-green-500 to-green-600"
                       initial={{ width: 0 }}
                       animate={{ width: `${Math.min(((campaign.conversions / (campaign.reach || 1)) * 100), 100)}%` }}
                       transition={{ delay: 0.3, duration: 0.8 }}
@@ -234,7 +234,7 @@ export default function Marketing() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="mt-12 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-2xl shadow-lg p-8 text-center"
+          className="mt-12 bg-linear-to-r from-purple-600 to-pink-600 text-white rounded-2xl shadow-lg p-8 text-center"
         >
           <h3 className="text-2xl font-bold mb-2">Ready to boost your sales?</h3>
           <p className="opacity-90 mb-4">Launch a new campaign and reach more customers today</p>

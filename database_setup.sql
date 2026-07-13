@@ -1,21 +1,8 @@
--- Create database
-CREATE DATABASE IF NOT EXISTS nigeria_food_app;
-
--- Use database
-USE nigeria_food_app;
-
--- Users table
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    phone VARCHAR(20),
-    password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- Use existing ecommerce database
+USE ecommerce;
 
 -- Foods table
-CREATE TABLE foods (
+CREATE TABLE IF NOT EXISTS foods (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     price DECIMAL(10,2) NOT NULL,
@@ -26,7 +13,7 @@ CREATE TABLE foods (
 );
 
 -- Cart table
-CREATE TABLE cart (
+CREATE TABLE IF NOT EXISTS cart (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     food_id INT NOT NULL,
@@ -38,7 +25,7 @@ CREATE TABLE cart (
 );
 
 -- Wishlist table
-CREATE TABLE wishlist (
+CREATE TABLE IF NOT EXISTS wishlist (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     food_id INT NOT NULL,
@@ -49,7 +36,7 @@ CREATE TABLE wishlist (
 );
 
 -- Orders table
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     total_amount DECIMAL(10,2) NOT NULL,
@@ -62,7 +49,7 @@ CREATE TABLE orders (
 );
 
 -- Order items table
-CREATE TABLE order_items (
+CREATE TABLE IF NOT EXISTS order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
     food_id INT NOT NULL,
@@ -73,7 +60,7 @@ CREATE TABLE order_items (
 );
 
 -- Reviews table
-CREATE TABLE reviews (
+CREATE TABLE IF NOT EXISTS reviews (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     food_id INT NOT NULL,

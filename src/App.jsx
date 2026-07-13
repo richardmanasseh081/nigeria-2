@@ -22,22 +22,78 @@ function App() {
   return (
     <Router>
       <Routes>
+
+        {/* Public routes */}
         <Route path="/" element={<Home />} />
-        <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-        <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
         <Route path="/products" element={<Products />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/marketing" element={<Marketing />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/settings" element={<Settings />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
-        <Route path="/reviews" element={<ProtectedRoute><Reviews /></ProtectedRoute>} />
-        <Route path="/order-tracking" element={<ProtectedRoute><OrderTracking /></ProtectedRoute>} />
+
+        {/* Protected routes */}
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <Orders />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/wishlist"
+          element={
+            <ProtectedRoute>
+              <Wishlist />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/reviews"
+          element={
+            <ProtectedRoute>
+              <Reviews />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/order-tracking"
+          element={
+            <ProtectedRoute>
+              <OrderTracking />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Optional pages */}
+        <Route path="/analytics" element={<Analytics />} />
+        <Route path="/marketing" element={<Marketing />} />
+        <Route path="/settings" element={<Settings />} />
+
+        {/* 404 page */}
         <Route path="*" element={<NotFound />} />
+
       </Routes>
     </Router>
   );

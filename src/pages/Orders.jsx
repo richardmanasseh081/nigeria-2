@@ -57,7 +57,7 @@ export default function Orders() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
+    <div className="min-h-screen bg-linear-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
@@ -84,7 +84,7 @@ export default function Orders() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className={`bg-gradient-to-br ${colors[stat.color]} text-white rounded-2xl p-6 shadow-lg`}
+                className={`bg-linear-to-br ${colors[stat.color]} text-white rounded-2xl p-6 shadow-lg`}
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -216,7 +216,7 @@ export default function Orders() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="mt-12 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-2xl shadow-lg p-8"
+          className="mt-12 bg-linear-to-r from-green-600 to-blue-600 text-white rounded-2xl shadow-lg p-8"
         >
           <div className="flex items-center justify-between">
             <div>

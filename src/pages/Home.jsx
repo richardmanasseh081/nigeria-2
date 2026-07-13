@@ -61,7 +61,7 @@ function Home() {
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Why Choose Naija Kitchen?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Fast Delivery Card */}
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all hover:scale-105">
+            <div className="bg-linear-to-br from-green-50 to-green-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all hover:scale-105">
               <div className="text-5xl text-green-600 mb-4 flex justify-center">
                 <FaTruck />
               </div>
@@ -70,7 +70,7 @@ function Home() {
             </div>
 
             {/* Fresh Ingredients Card */}
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all hover:scale-105">
+            <div className="bg-linear-to-br from-blue-50 to-blue-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all hover:scale-105">
               <div className="text-5xl text-blue-600 mb-4 flex justify-center">
                 <FaLeaf />
               </div>
@@ -79,7 +79,7 @@ function Home() {
             </div>
 
             {/* Quick Service Card */}
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all hover:scale-105">
+            <div className="bg-linear-to-br from-orange-50 to-orange-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all hover:scale-105">
               <div className="text-5xl text-orange-600 mb-4 flex justify-center">
                 <FaClock />
               </div>
@@ -88,7 +88,7 @@ function Home() {
             </div>
 
             {/* Highly Rated Card */}
-            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all hover:scale-105">
+            <div className="bg-linear-to-br from-yellow-50 to-yellow-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all hover:scale-105">
               <div className="text-5xl text-yellow-600 mb-4 flex justify-center">
                 <FaStar />
               </div>

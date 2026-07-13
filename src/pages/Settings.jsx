@@ -229,9 +229,9 @@ export default function Settings() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-linear-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 text-white p-8">
+      <div className="bg-linear-to-r from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 text-white p-8">
         <button onClick={() => {
           const delay = (ms) => new Promise((r) => setTimeout(r, ms));
           (async () => {
@@ -265,7 +265,7 @@ export default function Settings() {
               style={{ animationDelay: `${sectionIdx * 0.1}s` }}
             >
               {/* Section Header */}
-              <div className="bg-gradient-to-r from-green-500 to-green-600 dark:from-green-700 dark:to-green-800 p-6 flex items-center gap-4">
+              <div className="bg-linear-to-r from-green-500 to-green-600 dark:from-green-700 dark:to-green-800 p-6 flex items-center gap-4">
                 <Icon className="text-3xl text-white" />
                 <h2 className="text-2xl font-bold text-white">{section.title}</h2>
               </div>
@@ -370,7 +370,7 @@ export default function Settings() {
           <button className="px-8 py-4 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-lg font-bold hover:bg-gray-400 dark:hover:bg-gray-500 hover:scale-105 transition-all duration-300">
             Reset to Defaults
           </button>
-          <button className="px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-bold hover:from-green-700 hover:to-green-800 hover:scale-105 transition-all duration-300 shadow-lg">
+          <button className="px-8 py-4 bg-linear-to-r from-green-600 to-green-700 text-white rounded-lg font-bold hover:from-green-700 hover:to-green-800 hover:scale-105 transition-all duration-300 shadow-lg">
             Save Changes
           </button>
         </div>

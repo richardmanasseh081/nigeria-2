@@ -21,9 +21,9 @@ export default function About() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-linear-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 text-white p-8">
+      <div className="bg-linear-to-r from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 text-white p-8">
         <button onClick={() => {
           const delay = (ms) => new Promise((r) => setTimeout(r, ms));
           (async () => {
@@ -109,7 +109,7 @@ export default function About() {
             <motion.div
               key={idx}
               whileHover={{ y: -15, boxShadow: "0 20px 40px rgba(0,0,0,0.2)" }}
-              className="bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-700 dark:to-gray-600 p-8 rounded-xl shadow-md transition-all duration-300 text-center"
+              className="bg-linear-to-br from-green-50 to-green-100 dark:from-gray-700 dark:to-gray-600 p-8 rounded-xl shadow-md transition-all duration-300 text-center"
             >
               <motion.div
                 whileHover={{ scale: 1.15, rotate: 360 }}
@@ -127,27 +127,27 @@ export default function About() {
       </section>
 
       {/* Values Section */}
-      <section className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 text-white py-16">
+      <section className="bg-linear-to-r from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 text-white py-16">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-4xl font-bold mb-12 text-center animate-fade-in">Our Core Values</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <motion.div
               whileHover={{ scale: 1.08, y: -10 }}
-              className="bg-gradient-to-br from-green-700 to-green-800 p-8 rounded-2xl hover:from-green-600 hover:to-green-700 transition duration-300 shadow-lg"
+              className="bg-linear-to-br from-green-700 to-green-800 p-8 rounded-2xl hover:from-green-600 hover:to-green-700 transition duration-300 shadow-lg"
             >
               <h3 className="text-2xl font-bold mb-3">✨ Authenticity</h3>
               <p className="text-lg leading-relaxed">We honor traditional Nigerian recipes and cooking methods passed down through generations.</p>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.08, y: -10 }}
-              className="bg-gradient-to-br from-green-700 to-green-800 p-8 rounded-2xl hover:from-green-600 hover:to-green-700 transition duration-300 shadow-lg"
+              className="bg-linear-to-br from-green-700 to-green-800 p-8 rounded-2xl hover:from-green-600 hover:to-green-700 transition duration-300 shadow-lg"
             >
               <h3 className="text-2xl font-bold mb-3">🏆 Quality</h3>
               <p className="text-lg leading-relaxed">Every meal is prepared with the finest fresh ingredients and meticulous attention to detail.</p>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.08, y: -10 }}
-              className="bg-gradient-to-br from-green-700 to-green-800 p-8 rounded-2xl hover:from-green-600 hover:to-green-700 transition duration-300 shadow-lg"
+              className="bg-linear-to-br from-green-700 to-green-800 p-8 rounded-2xl hover:from-green-600 hover:to-green-700 transition duration-300 shadow-lg"
             >
               <h3 className="text-2xl font-bold mb-3">🤝 Community</h3>
               <p className="text-lg leading-relaxed">We celebrate Nigerian culture and build connections through the universal language of food.</p>

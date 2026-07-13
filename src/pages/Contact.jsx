@@ -13,7 +13,7 @@ export default function Contact() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); // new state for error messages
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,16 +25,18 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // reset error
+    setErrorMessage("");
 
     try {
-      const res = await fetch("http://localhost/api/contact.php", {
+      // ✅ FIXED: Changed URL to match your other APIs
+      const res = await fetch("http://localhost/nigeria2/api/contact.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const data = await res.json();
+      console.log("Contact response:", data);
 
       if (data.status === "success") {
         setSubmitted(true);
@@ -57,9 +59,9 @@ export default function Contact() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-linear-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 text-white p-8">
+      <div className="bg-linear-to-r from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 text-white p-8">
         <button onClick={async () => {
           const delay = (ms) => new Promise((r) => setTimeout(r, ms));
           try { show("Going back..."); await delay(3000); navigate("/"); } finally { hide(); }
@@ -134,14 +136,14 @@ export default function Contact() {
             </div>
 
             {/* Submit Button */}
-            <button type="submit" className="w-full py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-bold text-lg hover:from-green-700 hover:to-green-800 hover:scale-105 transition-all duration-300 shadow-lg flex items-center justify-center gap-2 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
+            <button type="submit" className="w-full py-4 bg-linear-to-r from-green-600 to-green-700 text-white rounded-lg font-bold text-lg hover:from-green-700 hover:to-green-800 hover:scale-105 transition-all duration-300 shadow-lg flex items-center justify-center gap-2 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
               <FaPaperPlane /> Send Message
             </button>
           </form>
         </div>
       </section>
 
-      {/* FAQ Section (unchanged) */}
+      {/* FAQ Section */}
       <section className="max-w-6xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-12 text-center">Frequently Asked Questions</h2>
         <div className="grid md:grid-cols-2 gap-8">

@@ -102,7 +102,7 @@ export default function OrderTracking() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
+    <div className="min-h-screen bg-linear-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
@@ -246,7 +246,7 @@ export default function OrderTracking() {
                 </div>
 
                 {/* Estimated Delivery */}
-                <div className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-2xl shadow-lg p-8">
+                <div className="bg-linear-to-r from-green-600 to-green-700 text-white rounded-2xl shadow-lg p-8">
                   <h3 className="text-lg font-bold mb-2">Estimated Delivery</h3>
                   <p className="text-lg opacity-90 mb-4">
                     {selectedOrder.status === "Delivered"

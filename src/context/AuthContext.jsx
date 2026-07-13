@@ -19,11 +19,23 @@ export function AuthProvider({ children }) {
 
   const login = async ({ email, password }) => {
     try {
-      const res = await fetch("/api/login.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      // Try Node.js backend first (http://localhost:4000)
+      let res;
+      try {
+        res = await fetch("http://localhost:4000/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+          timeout: 3000,
+        });
+      } catch {
+        // Fallback to PHP/MSW endpoint if Node backend not available
+        res = await fetch("/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+      }
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));

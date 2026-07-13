@@ -44,7 +44,7 @@ export default function Wishlist() {
   if (loading) return <div className="text-center py-20">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
+    <div className="min-h-screen bg-linear-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8\">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
@@ -141,7 +141,7 @@ export default function Wishlist() {
 
         {/* Move to Cart CTA */}
         {wishlist.length > 0 && (
-          <div className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl shadow-lg p-6 text-center">
+          <div className="bg-linear-to-r from-green-600 to-green-700 text-white rounded-xl shadow-lg p-6 text-center\">
             <h3 className="text-2xl font-bold mb-2">Ready to order?</h3>
             <p className="mb-4">Add items to your cart and checkout</p>
             <Link to="/" className="inline-flex items-center gap-2 bg-white text-green-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-bold transition-all hover:scale-105">

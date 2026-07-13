@@ -1,18 +1,25 @@
 <?php
-header("Content-Type: application/json");
+// ✅ CORS FIRST
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json");
+
+// ✅ Handle preflight
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit; 
+}
 
 require_once "config.php";
 
-// Read JSON input
+// Read JSON
 $data = json_decode(file_get_contents("php://input"), true);
 
 $email = trim($data["email"] ?? "");
 $password = $data["password"] ?? "";
 
-// Check required fields
+// Validate
 if(!$email || !$password){
     echo json_encode([
         "status" => "error",
@@ -21,7 +28,7 @@ if(!$email || !$password){
     exit;
 }
 
-// Lookup user by email
+// Find user
 $stmt = $pdo->prepare("SELECT id, full_name, email, phone, password_hash FROM users WHERE email = ?");
 $stmt->execute([$email]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -43,7 +50,7 @@ if(!password_verify($password, $user["password_hash"])){
     exit;
 }
 
-// Success: return full user info including phone
+// Success
 echo json_encode([
     "status" => "success",
     "user" => [

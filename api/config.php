@@ -1,7 +1,7 @@
 <?php
 
 $host    = "localhost";
-$db      = "ecommerce";
+$db      = "nigeria_food_app";
 $user    = "root";
 $pass    = "";
 $charset = "utf8mb4";

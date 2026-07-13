@@ -9,7 +9,7 @@ function Hero() {
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-r  opacity-60"></div>
+      <div className="absolute inset-0 bg-linear-to-r from-black to-transparent opacity-60"></div>
 
       <div className="relative z-10">
         <h2 className="text-4xl font-bold mb-4">Authentic Nigerian Dishes</h2>

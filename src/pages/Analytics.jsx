@@ -37,7 +37,7 @@ export default function Analytics() {
   const maxSales = Math.max(...salesData.map(d => d.sales));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
+    <div className="min-h-screen bg-linear-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
@@ -65,7 +65,7 @@ export default function Analytics() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ y: -5 }}
-                className={`bg-gradient-to-br ${colors[kpi.color]} text-white rounded-2xl p-6 shadow-lg`}
+                className={`bg-linear-to-br ${colors[kpi.color]} text-white rounded-2xl p-6 shadow-lg`}
               >
                 <div className="flex items-center justify-between mb-4">
                   <Icon className="text-3xl opacity-70" />
@@ -98,7 +98,7 @@ export default function Analytics() {
                   animate={{ height: `${(data.sales / maxSales) * 100}%` }}
                   transition={{ delay: i * 0.1, duration: 0.8 }}
                   whileHover={{ scale: 1.05 }}
-                  className="flex-1 bg-gradient-to-t from-green-600 to-green-400 rounded-t-lg cursor-pointer group relative"
+                  className="flex-1 bg-linear-to-t from-green-600 to-green-400 rounded-t-lg cursor-pointer group relative"
                 >
                   <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap">
                     ₦{(data.sales / 1000).toFixed(0)}k
@@ -186,7 +186,7 @@ export default function Analytics() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl shadow-lg p-8"
+          className="bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-2xl shadow-lg p-8"
         >
           <div className="flex items-center justify-between">
             <div>
